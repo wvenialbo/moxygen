@@ -6,19 +6,21 @@
  **/
 'use strict';
 
-var fs = require('fs');
-var log = require('./logger').getLogger();
-var path = require('path');
-var xml2js = require('xml2js');
+const fs       = require('fs');
+const log      = require('./logger').getLogger();
+const path     = require('path');
+const xml2js   = require('xml2js');
+const Compound = require('./compound');
+const helpers  = require('./helpers');
+const markdown = require('./markdown');
 
-var Compound = require('./compound');
-var helpers = require('./helpers');
-var markdown = require('./markdown');
+function toMarkdown(element, context)
+{
+  let s = '';
 
-function toMarkdown(element, context) {
-  var s = '';
   context = context || [];
-  switch (typeof element) {
+  switch (typeof element)
+  {
     case 'string':
       s = element;
       break;

@@ -8,27 +8,30 @@
 
 module.exports = {
 
-  refLink: function (text, refid) {
+  refLink : function(text, refid)
+  {
     return this.link(text, '{#ref ' + refid + ' #}');
   },
 
-  link: function (text, href) {
+  link : function(text, href)
+  {
     return '[' + text + '](' + href + ')';
   },
 
-  escape: {
-    row: function (text) {
+  escape : {
+    row : function(text)
+    {
       return text.replace(/\s*\|\s*$/, '');
     },
 
     /**
      * Escaping for a cell in a table.
      **/
-    cell: function (text) {
+    cell : function(text)
+    {
       return text.replace(/^[\n]+|[\n]+$/g, '') // trim CRLF
         .replace('/\|/g', '\\|')                // escape the pipe
         .replace(/\n/g, '<br/>');               // escape CRLF
-    }
-  }
-
+    },
+  },
 };

@@ -6,107 +6,138 @@
  **/
 'use strict';
 
-var log = require('./logger').getLogger();
+// const log = require('./logger').getLogger();
 
-function Compound(parent, id, name) {
-  this.parent = parent;
-  this.id = id;
-  this.name = name;
-  this.compounds = {};
-  this.members = [];
+function Compound(parent, id, name)
+{
+  this.parent          = parent;
+  this.id              = id;
+  this.name            = name;
+  this.compounds       = {};
+  this.members         = [];
   this.basecompoundref = [];
-  this.filtered = {};
+  this.filtered        = {};
 }
 
 Compound.prototype = {
 
-  find: function (id, name, create) {
-    var compound = this.compounds[id];
+  find : function(id, name, create)
+  {
+    let compound = this.compounds[id];
 
-    if (!compound && create) {
+    if (!compound && create)
+    {
       compound = this.compounds[id] = new Compound(this, id, name);
     }
 
     return compound;
   },
 
-  toArray: function (type, kind) {
+  toArray : function(type, kind)
+  {
     type = type || 'compounds';
-    var arr = Object.keys(this[type]).map(function(key) {
+
+    let arr = Object.keys(this[type]).map(function(key)
+    {
       return this[key];
     }.bind(this[type]));
 
-    if (type == 'compounds') {
-      var all = new Array();
-      arr.forEach(function (compound) {
-        if (!kind || compound.kind == kind) { //compound &&
+    if (type == 'compounds')
+    {
+      let all = [];
+
+      arr.forEach(function(compound)
+      {
+        if (!kind || compound.kind == kind) // compound &&
+        {
           all.push(compound);
           all = all.concat(compound.toArray(type, kind));
         }
-      }.bind(this));
+      });
+
       arr = all;
     }
 
     return arr;
   },
 
-  toFilteredArray: function (type) {
+  toFilteredArray : function(type)
+  {
     type = type || 'compounds';
-    var all = [];
+    let all = [];
 
-    (this.filtered[type] || []).forEach(function (item) {
-      var children = item.toFilteredArray(type);
+    (this.filtered[type] || []).forEach(function(item)
+    {
+      const children = item.toFilteredArray(type);
+
       all.push(item);
+
       all = all.concat(children);
     });
 
     return all;
   },
 
-  filterChildren: function (filters, groupid) {
-    this.toArray('compounds').forEach(function (compound) {
-      compound.filtered.members = compound.filter(compound.members, 'section', filters.members, groupid);
-      compound.filtered.compounds = compound.filter(compound.compounds, 'kind', filters.compounds, groupid);
+  filterChildren : function(filters, groupid)
+  {
+    this.toArray('compounds').forEach(function(compound)
+    {
+      compound.filtered.members   = compound.filter(compound.members,
+                                                    'section',
+                                                    filters.members, groupid);
+      compound.filtered.compounds = compound.filter(compound.compounds,
+                                                    'kind',
+                                                    filters.compounds, groupid);
     });
-    this.filtered.members = this.filter(this.members, 'section', filters.members, groupid);
-    this.filtered.compounds = this.filter(this.compounds, 'kind', filters.compounds, groupid);
+
+    this.filtered.members   = this.filter(this.members,
+                                          'section', filters.members, groupid);
+    this.filtered.compounds = this.filter(this.compounds,
+                                          'kind', filters.compounds, groupid);
   },
 
-  filter: function (collection, key, filter, groupid) {
-    var categories = {};
-    var result = [];
+  filter : function(collection, key, filter, groupid)
+  {
+    const categories = {};
+    let result       = [];
 
-    Object.keys(collection).forEach(function (name) {
-      var item = collection[name];
-      if (item) {
+    Object.keys(collection).forEach(function(name)
+    {
+      const item = collection[name];
 
+      if (item)
+      {
         // skip empty namespaces
-        if (item.kind == 'namespace') {
-          if ((!item.filtered.compounds || !item.filtered.compounds.length) &&
-            (!item.filtered.members || !item.filtered.members.length)) {
+        if (item.kind == 'namespace')
+        {
+          if ((!item.filtered.compounds || !item.filtered.compounds.length)
+            && (!item.filtered.members || !item.filtered.members.length))
+          {
             // log.verbose('Skip empty namespace: ' + item.name);
             return;
           }
         }
 
         // skip items not belonging to current group
-        else if (groupid && item.groupid != groupid) {
-          // log.verbose('Skip item from foreign group: { item.kind: ' + item.kind
-          //   + ', item.name: ' + item.name + ', item.groupid: '
+        else if (groupid && item.groupid != groupid)
+        {
+          // log.verbose('Skip item from foreign group: { item.kind: '
+          //    + item.kind+ ', item.name: ' + item.name + ', item.groupid: '
           //   + item.groupid + ', group.id: '+ group.id + '}');
           return;
         }
 
         (categories[item[key]] || (categories[item[key]] = [])).push(item);
       }
-    }.bind(this));
+    });
 
-    filter.forEach(function (category) {
+    filter.forEach(function(category)
+    {
       result = result.concat(categories[category] || []);
     });
 
     return result;
   },
-}
+};
 
 module.exports = Compound;

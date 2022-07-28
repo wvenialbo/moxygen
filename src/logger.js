@@ -10,13 +10,14 @@
 const winston = require('winston');
 
 // Create the global logger object
-let logger = winston.createLogger({
+const logger = winston.createLogger({
   level : 'info',
 });
 
 module.exports = {
 
-  init : function (options, defaultOptions) {
+  init : function(options, defaultOptions)
+  {
     // Logger transports
     let logfile = null;
     let logterm = null;
@@ -32,9 +33,11 @@ module.exports = {
     logger.add(logterm);
 
     // User defined log file?
-    if (typeof options.logfile != 'undefined') {
+    if (typeof options.logfile != 'undefined')
+    {
       // Use default log file name?
-      if (options.logfile === true) {
+      if (options.logfile === true)
+      {
         options.logfile = defaultOptions.logfile;
       }
       // Create log file transport
@@ -47,16 +50,19 @@ module.exports = {
     }
 
     // Set the logging level
-    if (!options.quiet) {
+    if (!options.quiet)
+    {
       this.setLevel('verbose');
     }
   },
 
-  getLogger: function () {
+  getLogger : function()
+  {
     return logger;
   },
 
-  setLevel: function (level) {
+  setLevel : function(level)
+  {
     logger.level = level;
   },
 };
