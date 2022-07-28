@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 'use strict';
 
-const logger  = require('../src/logger');
-const program = require('commander');
-const assign  = require('object-assign');
-const pjson   = require('../package.json');
 const app     = require('../index');
+const assign  = require('object-assign');
+const logger  = require('../src/logger');
+const pjson   = require('../package.json');
+const program = require('commander');
 
 program.version(pjson.version)
   .usage('[options] <doxygen XML directory>')

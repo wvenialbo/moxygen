@@ -6,10 +6,10 @@
  **/
 'use strict';
 
-const path       = require('path');
 const doxyparser = require('./src/parser');
-const templates  = require('./src/templates');
 const helpers    = require('./src/helpers');
+const path       = require('path');
+const templates  = require('./src/templates');
 
 module.exports = {
 

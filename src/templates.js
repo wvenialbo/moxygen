@@ -7,10 +7,10 @@
 'use strict';
 
 const fs         = require('fs');
-const log        = require('./logger').getLogger();
-const path       = require('path');
 const handlebars = require('handlebars');
 const helpers    = require('./helpers');
+const log        = require('./logger').getLogger();
+const path       = require('path');
 
 module.exports = {
 

@@ -7,9 +7,9 @@
 'use strict';
 
 const fs   = require('fs');
+const log  = require('./logger').getLogger();
 const path = require('path');
 const util = require('util');
-const log  = require('./logger').getLogger();
 
 module.exports = {
 
@@ -22,14 +22,14 @@ module.exports = {
 
       code.forEach(function(e)
       {
-        const refs = e.split(/(\[.*\]\(.*\)|\n|\s{2}\n)/g);
+        const refs = e.split(/(\[.*]\(.*\)|\n|\s{2}\n)/g);
 
         refs.forEach(function(f)
         {
           if (f.charAt(0) == '[')
           {
             // link
-            const link = f.match(/\[(.*)\]\((.*)\)/);
+            const link = f.match(/\[(.*)]\((.*)\)/);
 
             if (link)
             {
@@ -91,9 +91,9 @@ module.exports = {
   // Replace ref links to point to correct output file if needed
   resolveRefs : function(content, compound, references, options)
   {
-    return content.replace(/\{#ref ([^ ]+) #\}/g, function(_, refid)
+    return content.replace(/{#ref ([^ ]+) #}/g, function(_, refid)
     {
-      const ref = references[refid];
+      const ref  = references[refid];
       const page = this.findParent(ref, [ 'page' ]);
 
       if (page)
@@ -151,7 +151,7 @@ module.exports = {
     else if (options.classes)
     {
       const pname = compound.name
-        .replace(/\:/g, '-')
+        .replace(/:/g, '-')
         .replace('<', '(')
         .replace('>', ')');
       return util.format(options.output, pname);

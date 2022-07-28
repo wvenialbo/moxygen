@@ -29,8 +29,8 @@ module.exports = {
      **/
     cell : function(text)
     {
-      return text.replace(/^[\n]+|[\n]+$/g, '') // trim CRLF
-        .replace('/\|/g', '\\|')                // escape the pipe
+      return text.replace(/^\n+|\n+$/g, '') // trim CRLF
+        .replace('/|/g', '\\|')                // escape the pipe
         .replace(/\n/g, '<br/>');               // escape CRLF
     },
   },

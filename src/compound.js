@@ -63,7 +63,7 @@ Compound.prototype = {
 
   toFilteredArray : function(type)
   {
-    type = type || 'compounds';
+    type    = type || 'compounds';
     let all = [];
 
     (this.filtered[type] || []).forEach(function(item)
