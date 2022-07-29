@@ -124,6 +124,14 @@
     ],
     "node/prefer-promises/dns"                    : "error",
     "node/prefer-promises/fs"                     : "error",
+    "object-curly-spacing"                        : [
+      "error",
+      "always",
+      {
+        "arraysInObjects"                         : true,
+        "objectsInObjects"                        : true
+      }
+    ],
     "optimize-regex/optimize-regex"               : "warn",
     "require-jsdoc"                               : "off",
     "sort-destructure-keys/sort-destructure-keys" : [
