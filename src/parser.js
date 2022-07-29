@@ -728,7 +728,7 @@ module.exports = {
       {
         if (err)
         {
-          callback('Failed to load doxygen XML: ' + err);
+          callback('Failed to load doxygen XML: ' + err, null, options);
           return;
         }
         const xmlParser = new xml2js.Parser();
@@ -736,12 +736,12 @@ module.exports = {
         {
           if (err)
           {
-            callback('Failed to parse doxygen XML: ' + err);
+            callback('Failed to parse doxygen XML: ' + err, null, options);
             return;
           }
           this.root.kind = 'index';
           this.parseIndex(this.root, result.doxygenindex.compound, options);
-          callback(null, this.root); // TODO: return errors properly
+          callback(null, this.root, options); // TODO: return errors properly
         }.bind(this));
       }.bind(this));
   },
